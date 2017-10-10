@@ -12,11 +12,9 @@
     </head>
     <body>
         <h1>Shopping List</h1>
-        <div>
             <form action="login" method="POST">
         Username: <input type="text" name="uname" value="${username}">
         <input type="submit" value="Register">
             </form>
-        </div>
     </body>
 </html>
