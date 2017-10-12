@@ -23,15 +23,19 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("userLogin");
         
-        if(user != null){
-            response.sendRedirect("Admin");
-            return;
+        if(action == null){
+            if(user != null){
+                getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
+                return;
+            } else {
+                getServletContext().getRequestDispatcher("/WEB-INF/loginjsp.jsp").forward(request, response);
+            }
         }
-        
-        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
     
     @Override
@@ -75,30 +79,5 @@ public class LoginServlet extends HttpServlet {
             
             return;
         }
-        
-//        if (!userName.equals("adam") || !userName.equals("betty") &&
-//                !passWord.equals("password")) {
-//            request.setAttribute("errorMessage", "Invalid username or password!");
-//            
-//            user.setFirstName(userName);
-//            user.setPassWord(passWord);
-//            
-//            // set the attributes for the JSP
-//            request.setAttribute("user", user);
-//
-//            getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").
-//                    forward(request, response);
-//            
-//            return;
-//        }
-        
-        
-        
-        
-//        if(!username.equals("") && !password.equals("") && username != null && password != null && username.equals("admin") && password.equals("password")){
-//            getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
-//            return;
-//        }
-        //getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
     }
 }

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : adminpage
-    Created on : Oct 11, 2017, 6:31:02 PM
+    Document   : error_404
+    Created on : Oct 12, 2017, 1:38:59 PM
     Author     : 729347
 --%>
 
@@ -12,8 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Admin Page</h1>
-            <a href="Admin?action=refresh">Refresh</a>
-            <a href="Admin?action=logout">Logout</a>
+        <p>This URL does not exist. Please don't change the URL manually.</p>
     </body>
 </html>

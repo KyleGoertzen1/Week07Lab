@@ -16,11 +16,16 @@
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/Admin</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error_404.jsp</location>
+    </error-page>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
     <welcome-file-list>
         <welcome-file>login</welcome-file>
     </welcome-file-list>
