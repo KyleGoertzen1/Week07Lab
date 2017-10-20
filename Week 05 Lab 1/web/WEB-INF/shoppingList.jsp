@@ -13,15 +13,15 @@
     </head>
     <body>
         <h1>Shopping List</h1>
-        
+
         <p>Hello, ${username}
             <a href=ShoppingList?action=logout>Logout</a></p>
-        
-            
+
+
         <h2>List</h2>
         <form action="ShoppingList?action=add" method="POST">
-        Add Item: <input type="text" name="grocery">
-        
+            Add Item: <input type="text" name="grocery">
+
             <input type="submit" value="Add">
         </form>
         <form action="ShoppingList" method="POST">
@@ -33,10 +33,10 @@
                         </td>
                     </tr>
                 </c:forEach>
-                    
+
             </table>
-            <input type="hidden" name="action" value="Delete">
-            <input type="submit" value="Delete">
+            <input type="hidden" name="action" value="deleteuser">
+            <input type="submit" value="Delete User">
         </form>
     </body>
 </html>
