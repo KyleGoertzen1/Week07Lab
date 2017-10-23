@@ -39,6 +39,13 @@ public class AdminServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/loginjsp.jsp").forward(request, response);
             return;
         }
+        
+        if (action != null && action.equals("refresh")) {
+            //getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
+            response.sendRedirect("Admin");
+            return;
+        }
+        
         if (action == null) {
             list1 = (ArrayList<User>) session.getAttribute("newUser1");
             if (list1 == null) {
