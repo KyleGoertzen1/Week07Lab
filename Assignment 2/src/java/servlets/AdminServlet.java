@@ -6,6 +6,11 @@
 package servlets;
 
 import business.User;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,50 +25,105 @@ import javax.servlet.http.HttpSession;
  * @author 729347
  */
 public class AdminServlet extends HttpServlet {
-    ArrayList<String> userList;
-    ArrayList<String> passCodeList;
+
     int index;
+    ArrayList<User> list1;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //ArrayList<User> list1;
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("userLogin");
-         if(action != null && action.equals("logout")){
-            session.invalidate();
-            response.sendRedirect("login");
+        if (action != null && action.equals("logout")) {
+            getServletContext().getRequestDispatcher("/WEB-INF/loginjsp.jsp").forward(request, response);
             return;
         }
+        if (action == null) {
+            list1 = (ArrayList<User>) session.getAttribute("newUser1");
+            if (list1 == null) {
+                list1 = new ArrayList<User>();
+                String path = getServletContext().getRealPath("/WEB-INF/TheOnlyWorkingDBFile.txt");
+                BufferedReader br = new BufferedReader(new FileReader(new File(path)));
+                String line;
+                String parts[] = new String[100];
+                line = br.readLine();
+                while (line != null) {
+                    parts = line.split(",");
+                    User u = new User(parts[0], parts[1], Integer.parseInt(parts[2]));
+                    list1.add(u);
+                    session.setAttribute("newUser1", list1);
+                    line = br.readLine();
+                }
+                br.close();
+            }
+        }
+        
+        //String action = request.getParameter("action");
+        if (action != null && action.equals("deleteuser")) {
+            if (request.getParameter("delete") != null) {
+                index = Integer.parseInt(request.getParameter("delete"));
+                if (index >= 0) {
+                    list1.remove(index);
+                }
+                for(int i = 0; i < list1.size(); i++){
+                    System.out.println(list1.get(i).toString());
+                }
+                session.setAttribute("newUser1", list1);
+                getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
+                return;
+            }
+        }
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/adminpage.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //ArrayList<User> list1;
         HttpSession session = request.getSession();
-        userList = (ArrayList<String>) session.getAttribute("newUsername");
-        if(userList == null){
-            userList = new ArrayList<String>();
-        }
-        
-        passCodeList = (ArrayList<String>) session.getAttribute("newPassword");
-        if(passCodeList == null){
-            passCodeList = new ArrayList<String>();
-        }
+            list1 = (ArrayList<User>) session.getAttribute("newUser1");
+            if (list1 == null) {
+                list1 = new ArrayList<User>();
+            }
+
         
         String action = request.getParameter("action");
-        if(action != null && action.equals("adduser")){
+        if (action != null && action.equals("adduser")) {
             String name = request.getParameter("newUsername");
             String pass = request.getParameter("newPassword");
-            userList.add(name);
-            passCodeList.add(pass);
-//            session.setAttribute("addUser", userList);
-//            session.setAttribute("addPass", passCodeList);
+            //String path = getServletContext().getRealPath("/WEB-INF/TheOnlyWorkingDBFile.txt");
+            User user = null;
+            if (!(name.equals("admin"))) {
+                user = new User(name, pass, 0);
+            } else {
+                user = new User(name, pass, 1);
+            }
+
+//        String path = getServletContext().getRealPath("/WEB-INF/TheOnlyWorkingDBFile.txt");
+//        BufferedReader br = new BufferedReader(new FileReader(new File(path)));
+//        String line;
+//        String parts[] = new String[100];
+//        line = br.readLine();
+//        while (line != null) {
+//            parts = line.split(",");
+//            User u = new User(parts[0], parts[1], Integer.parseInt(parts[2]));
+//            list1.add(u);
+//            session.setAttribute("newUser1", list1);
+//            line = br.readLine();
+//        }
+//        br.close();
+            list1.add(user);
+            
+            String path = getServletContext().getRealPath("/WEB-INF/TheOnlyWorkingDBFile.txt");
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+
+            pw.println(user.getUsername() + "," + user.getPassword() + "," + user.getAdmin());
+            pw.close();
+            session.setAttribute("newUser1", list1);
+
             response.sendRedirect("Admin");
-//                String newItem = request.getParameter("grocery");
-//                itemArray.add(newItem);
-//                session.setAttribute("itemlist", itemArray);
-//                response.sendRedirect("ShoppingList");
         }
     }
 }

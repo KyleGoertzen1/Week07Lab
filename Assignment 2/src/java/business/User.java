@@ -4,17 +4,27 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String username;
-    private String password;
+    public String username;
+    public String password;
+    public int admin;
 
-    public User() {
-        username = "";
-        password = "";
+    public int getAdmin() {
+        return admin;
     }
 
-    public User(String username, String password) {
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+    
+    public User(){
+        
+    }
+    
+
+    public User(String username, String password, int admin) {
         this.username = username;
         this.password = password;
+        this.admin = admin;
     }
 
     public String getUsername() {
@@ -31,5 +41,5 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }    
 }

@@ -14,33 +14,40 @@
     </head>
     <body>
         <h1>Admin Page</h1>
-            <a href="Admin?action=refresh">Refresh</a>
-            <a href="Admin?action=logout">Logout</a>
-            
-            <h2>Add user</h2>
-            
-            <form action="Admin" method="POST">
+        <a href="Admin?action=refresh">Refresh</a>
+        <a href="Admin?action=logout">Logout</a>
+
+        <h2>Add user</h2>
+
+        <form action="Admin?action=adduser" method="POST">
             New username: <input type="text" name="newUsername" value=""><br>
             Password: <input type="text" name="newPassword" value=""><br>
             <input type="hidden" name="action" value="adduser">
             <input type="submit" value="Add User">
-            </form>
-            <h2>List of Users</h2>
-            
-            <form action="Admin" method=POST">
-                <table>
-                    <tr>
-                      <th>Username</th>
-                      <th>Password</th>
-                      <th>Delete</th>
-                    </tr>
-                        <c:forEach items="${addUser}" var="i" varStatus="status">
-                            ${i}
-                        </c:forEach>
-                </table>
-                <input type="hidden" name="action" value="deleteuser">
-                <input type="submit" value="Delete User">
-            </form>
-        
+        </form>
+        <h2>List of Users</h2>
+
+        <form action="Admin?action=deleteuser" method="GET">
+            <table>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Delete</th>
+                    
+                </tr>
+                <c:forEach items="${newUser1}" var="i" varStatus="status">
+                <tr>
+                    <td>
+                        
+                            ${i.username} ${i.password} <input type="radio" name="delete" value="${status.index}"> <br>
+                        
+                    </td>
+                </tr>
+                </c:forEach>
+            </table>
+            <input type="hidden" name="action" value="deleteuser">
+            <input type="submit" value="Delete User">
+        </form>
+
     </body>
 </html>
